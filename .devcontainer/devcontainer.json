@@ -1,0 +1,26 @@
+{
+    "name": "Curso DuckDB",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "ms-python.vscode-pylance",
+                "charliermarsh.ruff",
+                "ms-toolsai.jupyter",
+                "mechatroner.rainbow-csv",
+                "tamasfe.even-better-toml",
+                "chuckjonas.duckdb"
+            ]
+        }
+    },
+    "mounts": [
+        "source=duckdb-data,target=${containerWorkspaceFolder}/data,type=volume",
+        "source=opencode-config,target=/root/.config/opencode,type=volume",
+        "source=opencode-share,target=/root/.local/share/opencode,type=volume"
+    ],
+    "postCreateCommand": "uv pip install --system duckdb",
+    "remoteUser": "root"
+}

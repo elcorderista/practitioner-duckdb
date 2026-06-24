@@ -216,3 +216,17 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# opencode - archivos de LLM (no versionar en fase de aprendizaje)
+opencode.json
+opencode.jsonc
+.opencode/
+AGENTS.md
+
+# DuckDB data
+data/
+*.db
+*.duckdb
+*.dukdb
+*.duckdb.wal
+*.wal
