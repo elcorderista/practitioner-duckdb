@@ -3,7 +3,9 @@ CREATE OR REPLACE TABLE web_log_text (raw_text VARCHAR);
 
 -- 2. Copiamos de un archivo log a la base usa como delimitador el espacio 
 -- Al especificar vacíon el delim indica que tome cada línea como una fila 
-COPY web_log_text FROM 'data/data_03/access.log' (DELIM '');
+-- Importante delim '' para indicar que hay saldo de linea. 
+-- HEADER false para evitar que se coma la primera linea. 
+COPY web_log_text FROM 'data/data_03/access.log' (DELIM '', HEADER false);
 
 -- 3. Validamos los datos
 SELECT * 
