@@ -1,10 +1,10 @@
--- 1. Creacion de tabla raw para limipieza de datos
+-- 1. Creacion de tabla raw para limpieza de datos
 CREATE OR REPLACE TABLE web_log_text (raw_text VARCHAR);
 
 -- 2. Copiamos de un archivo log a la base usa como delimitador el espacio 
--- Al especificar vacíon el delim indica que tome cada línea como una fila 
--- Importante delim '' para indicar que hay saldo de linea. 
--- HEADER false para evitar que se coma la primera linea. 
+-- Al especificar vacío el delim indica que tome cada línea como una fila 
+-- Importante delim '' para indicar que hay salto de línea. 
+-- HEADER false para evitar que se coma la primera línea. 
 COPY web_log_text FROM 'data/data_03/access.log' (DELIM '', HEADER false);
 
 -- 3. Validamos los datos
@@ -18,7 +18,7 @@ SELECT
 FROM web_log_text
 LIMIT 5; 
 
--- 5. Extraemos los demas puntos del correo 
+-- 5. Extraemos los demás puntos del correo 
 -- Se indica el grupo de captura, en este caso el primero 1, que encuentre. 
 SELECT REGEXP_EXTRACT(raw_text, '^[0-9\.]*') AS client_ip,
     REGEXP_EXTRACT(raw_text, '\[(.*)\]', 1) AS date_text,
@@ -35,7 +35,7 @@ SELECT REGEXP_EXTRACT(raw_text, '^[0-9\.]*') AS client_ip,
     REGEXP_EXTRACT(raw_text, '([a-zA-Z\-]*)"$', 1) AS http_lang
 FROM web_log_text;
 
--- 7. Valildamsos la conversión de cadena a timestamp 
+-- 7. Validamos la conversión de cadena a timestamp 
 -- %z responde a la subcadena +0330, que es el desfase del horario 
 -- tres horas y treinta minutos con respecto a UTC (Coordinated Universal Time)
 SELECT client_ip, strptime(

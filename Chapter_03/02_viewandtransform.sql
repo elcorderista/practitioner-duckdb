@@ -1,4 +1,4 @@
--- 1. Creamos la vista sobre la taabla web_log_split
+-- 1. Creamos la vista sobre la tabla web_log_split
 CREATE OR REPLACE VIEW web_log_view AS 
 SELECT wls.client_ip,
     strptime(
@@ -12,7 +12,7 @@ SELECT wls.client_ip,
     LEFT JOIN language_iso AS lang
     ON (wls.http_lang = lang.lang_iso);
 
--- 2. Describir la vista que acabamos de crear 
+-- 2. Describimos la vista que acabamos de crear 
 DESCRIBE web_log_view;
 
 -- 3. Testing the view. 

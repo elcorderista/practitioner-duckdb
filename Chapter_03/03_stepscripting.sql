@@ -11,7 +11,7 @@ CREATE OR REPLACE TABLE web_log_text (raw_text VARCHAR);
 COPY web_log_text 
 FROM 'data/data_03/access.log' (delimiter '', header false);
 
--- 4. Creamos la tabla split a partr de la la tabla row
+-- 4. Creamos la tabla split a partir de la tabla raw
 CREATE OR REPLACE TABLE web_log_split
 AS
 SELECT regexp_extract(raw_text, '^[0-9\.]*' ) as client_ip, 

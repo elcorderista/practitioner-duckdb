@@ -12,9 +12,9 @@ FROM trips;
 
 SELECT tpep_pickup_datetime, -- fecha y hora de inicio de viaje
     trip_distance, -- distancia del viaje en millas
-    fare_amount, -- tarifa del taxi en dolares. 
-    tip_amount, -- propina en dolares 
-    PULocationID, -- identificador númerico del lugar de recogida 
+    fare_amount, -- tarifa del taxi en dólares. 
+    tip_amount, -- propina en dólares 
+    PULocationID, -- identificador numérico del lugar de recogida 
     DOLocationID -- identificador numerico del lugar de destino 
 FROM trips
 LIMIT 10;

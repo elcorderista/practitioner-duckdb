@@ -1,6 +1,6 @@
 -- 1. Obtener:
--- El valor mas nuevo y viejo de fechas del log 
--- Contar el el numero de registros capturados 
+-- El valor más nuevo y viejo de fechas del log 
+-- Contar el número de registros capturados 
 SELECT min(http_date) AS date_earliest,
     max(http_date) AS date_latest,
     count(*) AS web_log_count
@@ -12,11 +12,11 @@ SELECT http_date,
 FROM web_log_view;
 
 -- 3. Queremos agrupar todas las filas que comparten el mismo día e idioma en una sola fila 
--- y contar el número de registros de cada grupo. Y ordernar los resultados de cada grupo 
+-- y contar el número de registros de cada grupo. Y ordenar los resultados de cada grupo 
 -- en orden descendente por día y por conteo de registros.
--- a. Crea un subconsulta con el día y el idioma 
--- b. Le pedimos que tome por dia - lenguaje y los cuente (Idiomas en todo el día)
--- c. Muestramelos ordenados por dia y su conteo descendente por día.
+-- a. Creamos una subconsulta con el día y el idioma 
+-- b. Le pedimos que tome por día - lenguaje y los cuente (Idiomas en todo el día)
+-- c. Muéstramelos ordenados por día y su conteo descendente por día.
 WITH web_cte AS (
     SELECT client_ip,
         time_bucket(interval '1 day', http_date) AS day,
@@ -49,8 +49,8 @@ PIVOT web_cte
 ON language_name 
 USING count(*);
 
--- 5. Analizamos por dia y por idioma cuantas visitas tuvimos 
--- por día, ordenando por el primer dia registrado. 
+-- 5. Analizamos por día y por idioma cuántas visitas tuvimos 
+-- por día, ordenando por el primer día registrado. 
 WITH web_cte AS (
     SELECT time_bucket(interval '1 day', http_date) AS day,
            language_name
