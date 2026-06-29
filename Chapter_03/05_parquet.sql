@@ -52,6 +52,52 @@ LEFT JOIN locations AS l_do
 SELECT tpep_pickup_datetime, 
     pickup_up_zone,
     drop_off_zone,
-    trip_distance,
+    trip_distance
 FROM trips_with_locations
 LIMIT 10;
+
+-- 8 Análisis de datos. 
+-- Analizar la tarifa  minima, maxima y promedio 
+-- Analizar el promedio de propinas solo con pago en tarjeta 
+-- a. Con time_bucket agrupamos por dia 
+-- b. Obtenemos el numero de viajes
+-- c. Obtenemos las tarifas min, max y promedio y promedio de propinas 
+-- d. usamos un case para el type 1 que es tarjeta para calcular el promedio de propinas 
+SELECT time_bucket('1 day', tpep_pickup_datetime) AS day,
+    count(*) AS total_trips,
+    min(fare_amount) AS min_fare,
+    max(fare_amount) AS max_fare,
+    avg(fare_amount) AS avg_fare,
+    avg(
+        CASE 
+            WHEN payment_type = 1 
+            THEN tip_amount/fare_amount 
+            END
+    ) * 100 AS cc_tip_avg_percentage
+    FROM trips_with_locations
+    WHERE tpep_pickup_datetime between '2026-01-01 00:00:00' and '2026-01-30 23:59:59'
+    AND fare_amount > 0
+    GROUP BY 1,
+    order by 1;
+ 
+
+ select min(tpep_pickup_datetime), max(tpep_pickup_datetime)
+ from trips_with_locations;
+
+ -- 9. Usaremos Window Functions para: Determinar el monto maximo por dia
+ -- a. Usaremos una CTE para obtner el top del dia 
+ -- b. Sobre este grupo, calcularemos con una Windows Function el maximo de la tarifa. 
+ -- c. Seria tomar cuando fate_date sea igual a max_day_fare
+WITH cte AS (
+    SELECT twl.*, 
+    max(fare_amount) OVER (
+        PARTITION BY 
+            time_bucket('1 day', tpep_pickup_datetime)
+     ) AS max_day_fate_amount
+     FROM trips_with_locations as twl 
+)
+SELECT tpep_pickup_datetime, tpep_dropoff_datetime , pickup_up_zone, drop_off_zone, fare_amount 
+FROM cte
+WHERE fare_amount = max_day_fate_amount
+ AND tpep_pickup_datetime BETWEEN '2026-01-01 00:00:00' and '2026-01-30 23:59:59'
+ ORDER BY tpep_pickup_datetime;
